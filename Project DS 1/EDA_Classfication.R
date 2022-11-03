@@ -228,5 +228,5 @@ par(mfrow = c(2,2))
 plot(feat_log, main = "Logistic regression: features")  
 plot(feat_rf, main = "Random forest: features")  
 plot(feat_blog, main = "Boosted Logistic regression: features") 
-plot(feat_knn, main = "Logistic regression: features")  
+plot(feat_knn, main = "KNN: features")  
 
