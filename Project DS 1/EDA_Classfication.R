@@ -1,6 +1,6 @@
 ##--------------------------------------------------------------------
 ##            A script for exploratory data analysis, and            -
-##             classification training three classifiers             -
+##             classification training four classifiers             -
 ##   to diagnose heart disease based on the Heart Disease Data Set   -
 ##-------------------------------------------------------------------- 
 #################################################################
