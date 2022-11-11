@@ -7,7 +7,7 @@ We used the [Heart Disease Data Set](https://archive.ics.uci.edu/ml/datasets/Hea
 
 We have performed exploratory data analysis on the Cleveland heart disease dataset described above, and trained machine learning models to diagnose heart disease based on the available data and compare them visually in a grouped bar chart with regard to accuracy, sensitivity and specificity, along with confusion matrix for each classifier in python, and R. 
 
-### Project DS 1/R script "EDA_Classfication.R"  
+### Project DS 1/EDA_Classfication.R 
 
 **Packages**: _tidyverse, skimr, ggvis, caret, ggvis, caret, MLeval_   
  
@@ -30,6 +30,17 @@ This script has successfully ran on a system, and the compiled R markdown pdf ha
 11. Performance plots as a measure for model evaluation with ROC, calibration, precision recall gain, and Obs vs. Pred probabilities curve.  
  
 ## Week 3 
+  
+### Project DS 3/heart_Classfication_rerun.R 
+ 
+It is a modified version of EDA_Classfication.R that includes the imputation of missing values using _MICE_ package in _R_ that uses predictive matching mean as a method to fill the six NA data points (two in _ca_, and four in _thal_).   
+
+It creates some mild differences in accuracy, specificity, and sensitivity for every classifier, but only a significant difference in ROC-AUC for two of them, boosted logistic, and kNN, in particular.    
+ 
+Since the classes were not that imbalanced, there was no chnage made in the partitioning of datset while splitting into test, and train.
+ 
+ 
+
  
 
 
