@@ -11,14 +11,17 @@
 ##              Loading/Installing packages required             -
 ##----------------------------------------------------------------
  
-#install.packages(c("MLeval", caret", "ggvis","skimr", "tidyverse","ggvis", "e1071"))
+#install.packages(c("MLeval", caret", "ggvis", 
+# "skimr", "tidyverse","ggvis", "e1071", "RColorBrewer")) 
+
 library(tidyverse)
 library(skimr)  
 library(ggvis) 
 library(caret) 
 library(ggvis)
 library(caret) 
-library(MLeval)
+library(MLeval) 
+library(RColorBrewer)
  
 ##----------------------------------------------------------------
 ##                  Loading data from the file                   -
@@ -197,17 +200,24 @@ Sensitivity <- 100*rbind(cf_log[["byClass"]][["Sensitivity"]],
               cf_knn[["byClass"]][["Sensitivity"]])   
 
 pf_result <- t(data.frame(Accuracy, Specificity, Sensitivity)) 
-colnames(pf_result) <- c("Logistic", "Random Forest", "Boosted Logit", "KNN") 
+colnames(pf_result) <- c("Log", "RF", "LogitB", "KNN") 
 pf_result <- as.matrix(pf_result)  
- 
+pf_result 
+
 plot(rf_fit, main = "Random Forest")  
 plot(blog_fit, main = "Boosted Logistic") 
-plot(knn_fit, main = "K-nearest neighbour") 
-barplot(height = pf_result, beside = TRUE,  
-        col = c("darkgrey", "darkblue", "red"),  
-        xlab = "Method", legend.text = c("Acc", "Spec", "Sens"),  
-        args.legend = list(x = "bottomright"),  
-        main = "Performance Chart", ylab = "Percentage") 
+plot(knn_fit, main = "K-nearest neighbour")  
+
+y <- barplot(pf_result, beside = TRUE, horiz = TRUE, 
+             col=brewer.pal(3,"Set1"),border="white",  
+             legend.text = c("Accuracy", "Specificity", "Sensitivity"),  
+             args.legend = list(bty = "n", cex = 0.3), xlim=c(0,100),  
+             main = "Performance Chart", ylab = "Method")  
+
+x <- round(pf_result) 
+
+text(x+2,y,labels=as.character(x))
+
  
 
 ##----------------------------------------------------------------
