@@ -7,7 +7,7 @@ We used the [Heart Disease Data Set](https://archive.ics.uci.edu/ml/datasets/Hea
 
 We have performed exploratory data analysis on the Cleveland heart disease dataset described above, and trained machine learning models to diagnose heart disease based on the available data and compare them visually in a grouped bar chart with regard to accuracy, sensitivity and specificity, along with confusion matrix for each classifier in python, and R. 
 
-### R script "EDA_Classfication.R"  
+### Project DS 1/R script "EDA_Classfication.R"  
 
 **Packages**: _tidyverse, skimr, ggvis, caret, ggvis, caret, MLeval_   
  
@@ -27,7 +27,11 @@ This script has successfully ran on a system, and the compiled R markdown pdf ha
 8. Dividing the data for ML training, and test set. 
 9. Training the model with classifiers used: **logistic, random forest, boosted logistic, and kNN** using _train()_ from _caret_ package. 
 10. Performance comparison, and feature extraction from each model.  
-11. Performance plots as a measure for model evaluation with ROC, calibration, precision recall gain, and Obs vs. Pred probabilities curve. 
+11. Performance plots as a measure for model evaluation with ROC, calibration, precision recall gain, and Obs vs. Pred probabilities curve.  
+ 
+## Week 3 
+ 
+
 
 
 
