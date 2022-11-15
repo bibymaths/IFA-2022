@@ -18,8 +18,6 @@ library(tidyverse)
 library(skimr)  
 library(ggvis) 
 library(caret) 
-library(ggvis)
-library(caret) 
 library(MLeval) 
 library(RColorBrewer)
  
@@ -181,7 +179,7 @@ dotplot(results)
  
 cf_rf <- confusionMatrix(rf_pred, test_data$goal) 
 cf_log <- confusionMatrix(log_pred, test_data$goal) 
-cf_blog <- confusionMatrix(log_pred, test_data$goal)  
+cf_blog <- confusionMatrix(blog_pred, test_data$goal)  
 cf_knn <- confusionMatrix(knn_pred, test_data$goal)
   
 Accuracy <- 100*rbind(cf_log[["overall"]][["Accuracy"]],  
@@ -211,7 +209,7 @@ plot(knn_fit, main = "K-nearest neighbour")
 y <- barplot(pf_result, beside = TRUE, horiz = TRUE, 
              col=brewer.pal(3,"Set1"),border="white",  
              legend.text = c("Accuracy", "Specificity", "Sensitivity"),  
-             args.legend = list(bty = "n", cex = 0.3), xlim=c(0,100),  
+             args.legend = list(bty = "n", cex = 0.4), xlim=c(0,100),  
              main = "Performance Chart", ylab = "Method")  
 
 x <- round(pf_result) 
@@ -262,20 +260,25 @@ knn <- train(goal ~. -ID , data = train_data,
              method = "knn", preProcess = c("center","scale"),
              trControl = cont , tuneGrid = expand.grid(k = seq(1, 20, 2))) 
 
-#################################################################
-##            Logistic Classifier: Performance Plots            ##
-#################################################################  
-res.log <- evalm(log)  
-##################################################################
-##          Random Forest Classifier: Performance Plots          ##
-################################################################## 
-res.rf <- evalm(rf)
-##################################################################
-##          Boosted logit Classifier: Performance Plots          ##
-################################################################## 
-res.blog <- evalm(blog) 
-#################################################################
-##              k-NN Classifier: Performance Plots              ##
-#################################################################
-res.knn <- evalm(knn) 
 
+ 
+#################################################################
+##                           AUC-ROC                           ##
+################################################################# 
+metric <- evalm(list(log,rf,blog,knn), 
+      gnames=c('Logistic','Random Forest',  
+               'Boosted Logistic', 'kNN'), 
+      rlinethick=0.8,fsize=8, silent = TRUE)
+
+ROC <- data.frame(round(rbind(log[["results"]][["ROC"]],
+max(rf[["results"]][["ROC"]]), 
+max(blog[["results"]][["ROC"]]), 
+max(knn[["results"]][["ROC"]])),2))
+ 
+colnames(ROC) <- "AUC-ROC" 
+row.names(ROC) <- c("Logistic","Random Forest","Boosted Logit","kNN") 
+ 
+ROC
+##---------------------------------------------------------------
+##                              EOL                             -
+##---------------------------------------------------------------
