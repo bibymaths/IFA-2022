@@ -13,7 +13,7 @@ We have performed exploratory data analysis on the Cleveland heart disease datas
  
 **Note**: _Boosted logistics is using decision stumps (one node decision trees) as weak learners. It implements a internal version of decision stump classifier instead of using calls to rpart. Also, training and testing phases of the classification process are split into separate functions._ 
  
-This script has successfully ran on a system, and the compiled R markdown pdf has been added in the _Project DS 1_ directory for better understanding. Some of the figures/plots are also in the _Figures_, but also contained in the pdf document. 
+This script has successfully ran on a system, and the compiled R markdown pdf has been added in the _Project DS 1_ directory for better understanding.
  
 #### Steps 
  
@@ -37,17 +37,6 @@ It is a modified version of EDA_Classfication.R that includes the imputation of 
 
 It creates some mild differences in accuracy, specificity, and sensitivity for every classifier, but only a significant difference in ROC-AUC for two of them, boosted logistic, and kNN, in particular.    
  
-Since the classes were not that imbalanced, there was no chnage made in the partitioning of datset while splitting into test, and train.
+Since the classes were not that imbalanced, there was no chnage made in the partitioning of datset while splitting into test, and train. 
  
- 
-
- 
-
-
-
-
-
-
- 
- 
-
+This script has successfully ran on a system, and the compiled R markdown pdf has been added in the _Project DS 3_ directory for better understanding.
