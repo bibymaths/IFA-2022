@@ -7,7 +7,7 @@ We used the [Heart Disease Data Set](https://archive.ics.uci.edu/ml/datasets/Hea
 
 We have performed exploratory data analysis on the Cleveland heart disease dataset described above, and trained machine learning models to diagnose heart disease based on the available data and compare them visually in a grouped bar chart with regard to accuracy, sensitivity and specificity, along with confusion matrix for each classifier in python, and R. 
 
-### Project DS 1/EDA_Classfication.R 
+### Project DS 1/heart_Classfication.R 
 
 **Packages**: _tidyverse, skimr, ggvis, caret, ggvis, caret, MLeval_   
  
