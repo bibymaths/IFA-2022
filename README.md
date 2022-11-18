@@ -33,10 +33,11 @@ This script has successfully ran on a system, and the compiled R markdown pdf ha
 
 It is a modified version of heart_Classfication.R that includes the imputation of missing values using _MICE_ package in _R_ that uses predictive matching mean as a method to fill the six NA data points (two in _ca_, and four in _thal_).   
 
-It creates some mild differences in accuracy, specificity, and sensitivity for every classifier, but only a significant difference in ROC-AUC for two of them, boosted logistic, and kNN, in particular.    
-
-### Project 2 
+It creates some mild differences in accuracy, specificity, and sensitivity for every classifier, but only a significant difference in ROC-AUC for two of them, boosted logistic, and kNN, in particular.     
  
 Since the classes were not that imbalanced, there was no chnage made in the partitioning of datset while splitting into test, and train. 
  
 This script has successfully ran on a system, and the compiled R markdown pdf has been added in the _Project DS 3_ directory for better understanding.
+
+
+### Project 2 
