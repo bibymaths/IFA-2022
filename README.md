@@ -1,21 +1,21 @@
 # IFA-2022
 # Group 7: Maike, Jule, Abhinav, Se Yeon Kim
-
-## Week 1
  
+
+## Data Science
+### Project 1 
+
 We used the [Heart Disease Data Set](https://archive.ics.uci.edu/ml/datasets/Heart+Disease) from the Cleveland Database. This database contains clinical and bio-medical attributes for more than 300 patients. The "goal" field refers to the presence of a heart disease in a patient. It is integer valued from 0 (no presence) to 4.   
 
 We have performed exploratory data analysis on the Cleveland heart disease dataset described above, and trained machine learning models to diagnose heart disease based on the available data and compare them visually in a grouped bar chart with regard to accuracy, sensitivity and specificity, along with confusion matrix for each classifier in python, and R. 
 
-### Project DS 1/heart_Classfication.R 
+#### heart_Classfication.R 
 
 **Packages**: _tidyverse, skimr, ggvis, caret, ggvis, caret, MLeval_   
  
 **Note**: _Boosted logistics is using decision stumps (one node decision trees) as weak learners. It implements a internal version of decision stump classifier instead of using calls to rpart. Also, training and testing phases of the classification process are split into separate functions._ 
  
 This script has successfully ran on a system, and the compiled R markdown pdf has been added in the _Project DS 1_ directory for better understanding.
- 
-#### Steps 
  
 1. Loading the processed dataset using _read_csv()_. 
 2. Removing NA values using _na.omit()_. 
@@ -28,14 +28,14 @@ This script has successfully ran on a system, and the compiled R markdown pdf ha
 9. Training the model with classifiers used: **logistic, random forest, boosted logistic, and kNN** using _train()_ from _caret_ package. 
 10. Performance comparison, and feature extraction from each model.  
 11. Performance plots as a measure for model evaluation with ROC, calibration, precision recall gain, and Obs vs. Pred probabilities curve.  
- 
-## Week 3 
   
-### Project DS 3/heart_Classfication_rerun.R 
- 
-It is a modified version of EDA_Classfication.R that includes the imputation of missing values using _MICE_ package in _R_ that uses predictive matching mean as a method to fill the six NA data points (two in _ca_, and four in _thal_).   
+#### heart_Classfication_NAs.R 
+
+It is a modified version of heart_Classfication.R that includes the imputation of missing values using _MICE_ package in _R_ that uses predictive matching mean as a method to fill the six NA data points (two in _ca_, and four in _thal_).   
 
 It creates some mild differences in accuracy, specificity, and sensitivity for every classifier, but only a significant difference in ROC-AUC for two of them, boosted logistic, and kNN, in particular.    
+
+### Project 2 
  
 Since the classes were not that imbalanced, there was no chnage made in the partitioning of datset while splitting into test, and train. 
  
