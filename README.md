@@ -1,5 +1,7 @@
 # IFA-2022
-# Group 7: Maike, Jule, Abhinav, Se Yeon Kim
+## Group 7  
+ 
+Contributors: Maike, Jule, Abhinav, Se Yeon Kim
 
 The module is divided into three blocks namely, Data Science, Complex systems, and Advanced algorithms. You can find the project reports for each block, and presentation on **Project 1** (given on 18th November 2022) in the respective folders.
 
