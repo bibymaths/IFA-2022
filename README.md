@@ -1,11 +1,10 @@
 # IFA-2022
 ## Group 7  
- 
-Contributors: Jule Brenningmeyer, Maike Herkenrath, Abhinav Mishra, Se Yeon Kim
 
 The module is divided into three blocks namely, Data Science, Complex systems, and Advanced algorithms. You can find the project reports for each block, and presentation on **Project 1** (given on 18th November 2022) in the respective folders.
 
-## Data Science
+## Data Science 
+Contributors: Jule Brenningmeyer, Maike Herkenrath, Abhinav Mishra, Se Yeon Kim
 ### Project 1 
  
 The data, and figures used in writing the report section for **Project 1** can be found in the respective subfolders. The scripts has ran successfully on a system, and the compiled R markdown pdf has been added for better understanding. Here's some description of the script if you'd like to read:
@@ -32,4 +31,8 @@ It creates some mild differences in accuracy, specificity, and sensitivity for e
  
 Since the classes were not that imbalanced, there was no change made in the partitioning of datset while splitting into test, and train. 
 
-### Project 2 
+### Project 2  
+ 
+## Complex Systems 
+Contributors: Jule Brenningmeyer, Maike Herkenrath, Abhinav Mishra 
+### Exercise 1
