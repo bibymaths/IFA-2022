@@ -34,10 +34,9 @@ def ssa(s, k, x_0, tFinal):
             currentSum+=rate
             j = i
 
-
         # Update states
-        
         x += s[:,j]
+        # print(t)
         times.append(t)
         states.append(x[1])
 
@@ -76,11 +75,12 @@ tFinal = 10
 
 for i in range(nrSimulations):
     states, times = ssa(s, k, x_0, tFinal)
-
+    
     plt.plot(states, times)
     plt.show()
-    output = np.concatenate((np.array(times,ndmin=2),np.array(states,ndmin=2)), axis=0)
+    output = np.concatenate((np.array(states,ndmin=2),np.array(times,ndmin=2)), axis=0)
+    
     np.savetxt('traj'+str(i+1)+'.txt',output,delimiter = ',',fmt='%1.3f')
-    print('files saved')
+    
     
 
