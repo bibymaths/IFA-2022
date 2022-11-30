@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def ssa(s, k, x_0, tFinal):
     # initialize lists
     times = []
@@ -14,7 +15,7 @@ def ssa(s, k, x_0, tFinal):
         # When?  
         R = ReactionRates(k,x)
         lambdaVar = np.sum(R)
-        tau = 1/lambdaVar * np.log(1/np.random.random())      
+        tau = (1/lambdaVar) * np.log(1/np.random.random())      
 
         # End time reached
         if t + tau > tFinal:
@@ -22,21 +23,21 @@ def ssa(s, k, x_0, tFinal):
             break
         
         # Update time
-        t = t + tau
+        t += tau
 
         # What reaction happens
         goal = lambdaVar * np.random.random()
         currentSum = 0
         j = 0
         for i, rate in enumerate(R):
-            if(currentSum + rate > goal):
+            currentSum+= rate
+            if(currentSum > goal):
+                j = i
                 break
-            currentSum+=rate
             j = i
 
         # Update states
         x += s[:,j]
-        # print(t)
         times.append(t)
         states.append(x[1])
 
@@ -48,7 +49,7 @@ def ReactionRates(k,X):
         R[0] = k[0]
         R[1] = k[1]*X[0]
         R[2] = k[2]*X[0]*X[1]
-        R[3] = k[1]*X[1]*3*10**7
+        R[3] = k[1]*X[1]*(3*10**7)
         R[4] = k[3]*X[1]
         R[5] = k[1]*X[2]
         return R
