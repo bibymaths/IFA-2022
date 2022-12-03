@@ -1,6 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 def ssa(s, k, x_0, tFinal):
     # initialize lists
@@ -15,7 +13,12 @@ def ssa(s, k, x_0, tFinal):
         # When?  
         R = ReactionRates(k,x)
         lambdaVar = np.sum(R)
-        tau = (1/lambdaVar) * np.log(1/np.random.random())      
+
+        # make sure we don't divide by zero
+        u1 = np.random.random()
+        while u1 == 0:
+            u1 = np.random.random()
+        tau = (1/lambdaVar) * np.log(1/u1)      
 
         # End time reached
         if t + tau > tFinal:
@@ -43,7 +46,6 @@ def ssa(s, k, x_0, tFinal):
 
     return times, states
 
-
 def ReactionRates(k,X):
         R = np.zeros((6,1))
         R[0] = k[0]
@@ -53,7 +55,6 @@ def ReactionRates(k,X):
         R[4] = k[3]*X[1]
         R[5] = k[1]*X[2]
         return R
-
 
 inputFile = np.loadtxt('Input.txt')
 np.random.seed(seed=int(inputFile[0]))
@@ -76,12 +77,6 @@ tFinal = 10
 
 for i in range(nrSimulations):
     states, times = ssa(s, k, x_0, tFinal)
-    
-    plt.plot(states, times)
-    plt.show()
     output = np.concatenate((np.array(states,ndmin=2),np.array(times,ndmin=2)), axis=0)
     
-    np.savetxt('traj'+str(i+1)+'.txt',output,delimiter = ',',fmt='%1.3f')
-    
-    
-
+    np.savetxt('Task1Traj'+str(i+1)+'.txt',output,delimiter = ',',fmt='%1.3f')
