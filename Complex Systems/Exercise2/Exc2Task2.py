@@ -1,6 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 def ssa(s, k, x_0, tFinal):
     # initialize lists
@@ -15,7 +13,13 @@ def ssa(s, k, x_0, tFinal):
         # When?  
         R = ReactionRates(k,x)
         lambdaVar = np.sum(R)
-        tau = (1/lambdaVar) * np.log(1/np.random.random())      
+        u1 = np.random.random()
+
+        # make sure we don't divide by zero
+        while u1 == 0:
+            u1 = np.random.random()
+
+        tau = (1/lambdaVar) * np.log(1/u1)      
 
         # End time reached
         if t + tau > tFinal:
@@ -65,18 +69,10 @@ k = [0.15, 0.0015, 20.0, 3.5]
 
 # Initial state
 x_0 = 40
-tFinal = 10
+tFinal = 5
 
 for i in range(nrSimulations):
     states, times = ssa(s, k, x_0, tFinal)
-    
-    print(times)
-
-    plt.plot(states, times)
-    plt.show()
     output = np.concatenate((np.array(states,ndmin=2),np.array(times,ndmin=2)), axis=0)
     
     np.savetxt('Task2Traj'+str(i+1)+'.txt',output,delimiter = ',',fmt='%1.3f')
-    
-    
-
