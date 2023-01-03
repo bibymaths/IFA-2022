@@ -31,7 +31,7 @@ def ssa(s, k, x_0):
 def ReactionRates(X):  
         R = np.zeros((6,1))
         R[0] = k[0]
-        R[1] = k[1]*X[1]
+        R[1] = k[1]*X[0]
         R[2] = k[2]*X[0]*X[2]
         R[3] = k[3]*X[1]
         R[4] = k[4]*X[1]
