@@ -10,7 +10,8 @@ Snippet from the previous task: START
 """
 import numpy as np 
 import pandas as pd 
-import seaborn as sns 
+import seaborn as sns
+import statistics as stat
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit 
 from scipy.integrate import odeint
@@ -71,9 +72,29 @@ for i in range(30):
     c5_par.append(popt[3])  
   
 opt = {'C2':c2_par,'C3':c3_par,'C4':c4_par,'C5':c5_par}
-data = pd.DataFrame(opt) 
-    
-sns.set_style('white')
-sns.boxplot(data=data, palette='flare')
-sns.despine()
+
+###########################################
+# Normalization using mean values         #  
+###########################################
+
+opt_norm = {'C2':[x - int(stat.mean(c2_par)) for x in c2_par],
+            'C3':[x - int(stat.mean(c3_par)) for x in c3_par],
+            'C4':[x - int(stat.mean(c4_par)) for x in c4_par],
+            'C5':[x - int(stat.mean(c5_par)) for x in c5_par]}
+
+data = pd.DataFrame(opt)
+
+data_norm = pd.DataFrame(opt_norm)
+
+
+###########################################
+# Boxplots with density and line  plots   #  
+###########################################
+
+sns.boxplot(data=data_norm, palette='flare').set_title('Mean Normalized Parameters Boxplot')
+
+sns.displot(data=data_norm, kind="kde", fill=True).set(title='Mean Normalized Parameters Density Plot')
+
+sns.lineplot(data=data)
+
 plt.show()
