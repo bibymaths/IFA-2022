@@ -10,14 +10,12 @@ def ssa(s, k, x_0):
     times.append(t)
     states.append(x[2])
 
-    while x[2] > 0 and x[2] <= 50:
-        # When?  
-        R = ReactionRates(x)
-
+    while not (x[2] <= 0 and x[1] <= 0) and x[2] <= 50:
         # Update time
         t += 1
 
         # What reaction happens
+        R = ReactionRates(x)
         u2 =  np.random.random()
         j = np.sum(np.cumsum(R) < u2 * np.sum(R))
 
@@ -47,8 +45,6 @@ k = [100, 0.1, 0.01, 1.0, 10, 2]
 
 x2Values = 5
 nrSim = 300
-
-
 virus_gone = np.zeros(5)
 virus_won = np.zeros(5)
 
@@ -65,10 +61,10 @@ for i in range(x2Values):
             virus_won[i] += 1
 
         # Plot for all trajectories for X2 = i
-        """ plt.plot(current_times, current_states)
+        plt.plot(current_times, current_states)
         plt.ylabel('Virus')
         plt.xlabel('Time')
-    plt.show() """
+    plt.show()
 
 # Plot that shows  how many of the simulations ended with 
 # the virus dying or surviving resp.
@@ -80,5 +76,12 @@ plt.xlabel('X_2')
 plt.xticks(ticks=x_axis)
 plt.ylabel('Simulations')
 plt.show()
+
+# Plot for infection probability for 
+plt.plot(x_axis, virus_won/nrSim, 's') 
+plt.xlabel('X_2')
+plt.xticks(ticks=x_axis)
+plt.ylabel('Infection Probability')
+plt.show()
         
-        
+print(virus_won/nrSim)
