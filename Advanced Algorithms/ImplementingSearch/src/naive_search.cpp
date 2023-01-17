@@ -10,8 +10,11 @@
 #include <seqan3/search/search.hpp>
 
 // prints out all occurences of query inside of ref
+// void gibt an, dass die Funktion keinen Wert zurück gibt
+// const& red heißt es gibt eine KOnstnate ref (und irgendwas mit pointer)
 void findOccurences(std::vector<seqan3::dna5> const& ref, std::vector<seqan3::dna5> const& query) {
     //!TODO ImplementMe
+    //print Ergebnis
 }
 
 int main(int argc, char const* const* argv) {
@@ -54,7 +57,9 @@ int main(int argc, char const* const* argv) {
     queries.resize(100); // will reduce the amount of searches
 
     //! search for all occurences of queries inside of reference
+    // for loop: for r in reference
     for (auto& r : reference) {
+	// for loop: for q in queries
         for (auto& q : queries) {
             findOccurences(r, q);
         }
