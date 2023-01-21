@@ -65,32 +65,64 @@ int main(int argc, char const* const* argv) {
     //      cast it by calling:
 
     sauchar_t const* str = reinterpret_cast<sauchar_t const*>(reference.data());
-    
 	int n = reference.size(); 
-	seqan3::debug_stream << "n: " << n << "\n";
+	
+	// start timer
+	auto start = std::chrono::system_clock::now();	
+
 	// allocate
 	int *SA = (int *)malloc(n * sizeof(int));
-	// expectst a const sauchar_t *
+	// compute suffix array
 	divsufsort(str, SA, n);
 
-    // output
-	/*int i,j;
-	for(i = 0; i < 100; ++i) {
-		seqan3::debug_stream << "SA[" << i << "] = " << SA[i] << "\n";
-		for(j = SA[i]; j < 100; ++j) {
-				seqan3::debug_stream << str[j] << "\n";
-	    }
-		seqan3::debug_stream <<"\n";
-	}*/
-	
-	
-
+    // search for query q in the reference ref
     for (auto& q : queries) {
-        //!TODO !ImplementMe apply binary search and find q  in reference using binary search on `suffixarray`
+        // !ImplementMe apply binary search and find q  in reference using binary search on `suffixarray`
         // You can choose if you want to use binary search based on "naive approach", "mlr-trick", "lcp"
+				
+		// set up variables to keep track of lower an upper bound
+    	int low = 0;
+		int mid = 0;
+		int high = n-1;
 		
-		
+		// main loop checking the current low and high bounds
+		while (low < high){
+			mid = (low + high) / 2;
+
+			// get position in ref where the mid'th entry in the Suffix Array starts
+			int current = SA[mid];
+			// bool variable to keep track of a found match
+			bool found = true;
+
+			// loop to pair wise check letters of query and current suffix
+			for (int i = 0; i < (int)q.size(); i++){
+				if (reference[current + i] == q[i]){ // Case 1: q and ref align
+						continue;
+				}
+				else if(reference[current+i] < q[i]){ // Case 2: mid is smaller than q. Adjust low
+					low = mid;
+					found = false;
+					break;
+				} else if (reference[current+i] > q[i]){ // Case 3: mid is greater than q. Adjust high
+					high = mid;
+					found = false;
+					break;
+				}
+			}
+			if (found == true){
+				seqan3::debug_stream << q << " found at index:" << current << " in the reference.\n";
+				low = high;
+			}else if (high == low+1){
+				seqan3::debug_stream << q << " not found.\n";
+				low = high;
+			}
+		}	
     }
+
+	// end timer
+	auto end = std::chrono::system_clock::now();
+	auto elapsed = end - start;
+	std::cout << elapsed.count()/1000000000.0 << "s \n";
 	// deallocate
 	free(SA);
 
