@@ -24,7 +24,7 @@ int main(int argc, char const* const* argv) {
     auto query_file = std::filesystem::path{};
     parser.add_option(query_file, '\0', "query", "path to the query file");
 
-    int nrQueries;
+    int nrQueries = 1337;
     parser.add_option(nrQueries, '\0', "queries", "number of queries");
 
     try {
