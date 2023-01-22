@@ -24,6 +24,9 @@ int main(int argc, char const* const* argv) {
     auto query_file = std::filesystem::path{};
     parser.add_option(query_file, '\0', "query", "path to the query file");
 
+    int nrQueries;
+    parser.add_option(nrQueries, '\0', "queries", "number of queries");
+
     try {
          parser.parse();
     } catch (seqan3::argument_parser_error const& ext) {
@@ -51,7 +54,7 @@ int main(int argc, char const* const* argv) {
     }
 
     //!TODO here adjust the number of searches
-    queries.resize(100); // will reduce the amount of searches
+    queries.resize(nrQueries); // will reduce the amount of searches
 
     // Array that should hold the future suffix array
     std::vector<saidx_t> suffixarray;
@@ -66,15 +69,15 @@ int main(int argc, char const* const* argv) {
 
     sauchar_t const* str = reinterpret_cast<sauchar_t const*>(reference.data());
 	int n = reference.size(); 
-	
-	// start timer
-	auto start = std::chrono::system_clock::now();	
 
 	// allocate
 	int *SA = (int *)malloc(n * sizeof(int));
 	// compute suffix array
 	divsufsort(str, SA, n);
-
+	
+	// start timer
+	auto start = std::chrono::system_clock::now();
+	
     // search for query q in the reference ref
     for (auto& q : queries) {
         // !ImplementMe apply binary search and find q  in reference using binary search on `suffixarray`
@@ -85,6 +88,27 @@ int main(int argc, char const* const* argv) {
 		int mid = 0;
 		int high = n-1;
 		
+		// Check for edge case q = low or q = high
+		bool lowIsQuery = true;
+		bool highIsQuery = true;
+		
+		for (int i = 0; i < (int) q.size(); i++){
+			if (reference[SA[low+i]] != q[i]){
+				lowIsQuery = false;
+				break;
+			}
+		}
+		for (int i = 0; i < (int) q.size(); i++){
+			if (reference[SA[high]+i] != q[i]){
+				highIsQuery = false;
+				break;
+			}
+		}
+		
+		// break if one of the edge cases is true
+		if (lowIsQuery){ seqan3::debug_stream << q << " found at index:" << low	<< " in the reference.\n"; break;}
+		if (highIsQuery){ seqan3::debug_stream << q << " found at index:" << high	<< " in the reference.\n"; break;}
+
 		// main loop checking the current low and high bounds
 		while (low < high){
 			mid = (low + high) / 2;
@@ -112,8 +136,24 @@ int main(int argc, char const* const* argv) {
 			if (found == true){
 				seqan3::debug_stream << q << " found at index:" << current << " in the reference.\n";
 				low = high;
+				bool keepGoing = true;
+
+				while(keepGoing){ 
+				// loop to pair wise check letters of query and current suffix
+					current = SA[mid+1];
+					for (int i = 0; i < (int)q.size(); i++){
+						if (reference[current + i] == q[i]){ // Case 1: q and ref align
+						continue;	
+						}else{
+						keepGoing = false;
+						break;
+						}
+					}
+					seqan3::debug_stream << q << " found at index: " << current << " in the reference.\n";
+					mid++;
+				}
 			}else if (high == low+1){
-				seqan3::debug_stream << q << " not found.\n";
+				//seqan3::debug_stream << q << " not found.\n";
 				low = high;
 			}
 		}	
@@ -122,9 +162,8 @@ int main(int argc, char const* const* argv) {
 	// end timer
 	auto end = std::chrono::system_clock::now();
 	auto elapsed = end - start;
-	std::cout << elapsed.count()/1000000000.0 << "s \n";
+	seqan3::debug_stream  << elapsed.count()/1000000000.0 << "s \n";
 	// deallocate
 	free(SA);
-
     return 0;
 }

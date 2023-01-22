@@ -1,7 +1,7 @@
 #include <sstream>
 #include <chrono>
 
-#include <seqan3/std/filesystem>
+#include <filesystem>
 
 #include <seqan3/alphabet/nucleotide/dna5.hpp>
 #include <seqan3/argument_parser/all.hpp>
@@ -14,12 +14,11 @@
 // void gibt an, dass die Funktion keinen Wert zurück gibt
 // const& red heißt es gibt eine KOnstnate ref (und irgendwas mit pointer)
 void findOccurences(std::vector<seqan3::dna5> const& ref, std::vector<seqan3::dna5> const& query) {
-    //!TODO ImplementMe
-	int count = 0;
+   	int count = 0;
 	bool found;
-   for (int i = 0; i < ref.size()-query.size(); i++){
+   for (int i = 0; i < (int) (ref.size()-query.size()); i++){
 	  found = true;
-	for (int j = 0; j < query.size(); j++){	
+	for (int j = 0; j < (int) query.size(); j++){	
 		if(ref[i+j] != query[j]){
 			found = false;
 		break;
@@ -27,9 +26,9 @@ void findOccurences(std::vector<seqan3::dna5> const& ref, std::vector<seqan3::dn
 	}
 	if (found == true){	
 		count++;
-   		seqan3::debug_stream << "Query found in reference at index " << i << "\n";
+   		seqan3::debug_stream << query << " found in reference at index " << i << "\n";
 	}else{
-		//seqan3::debug_stream << "No occurance found.\n";
+		//seqan3::debug_stream << query << " not found.\n";
 	}	
 	}
 }
@@ -45,6 +44,9 @@ int main(int argc, char const* const* argv) {
 
     auto query_file = std::filesystem::path{};
     parser.add_option(query_file, '\0', "query", "path to the query file");
+
+    int nrQueries;
+    parser.add_option(nrQueries, '\0', "queries", "number of queries");
 
     try {
          parser.parse();
@@ -69,15 +71,14 @@ int main(int argc, char const* const* argv) {
         queries.push_back(record.sequence());
     }
 
-    //!TODO !CHANGEME here adjust the number of searches
-    queries.resize(100); // will reduce the amount of searches
+    // adjust the number of searches
+    queries.resize(nrQueries); // will reduce the amount of searches
 
     //! search for all occurences of queries inside of reference
     // for loop: for r in reference
     
     // add timestamp
 	typedef std::chrono::high_resolution_clock Time;
-	typedef std::chrono::milliseconds ms;
 	typedef std::chrono::duration<float> fsec;
 	auto t0 = Time::now();	
 
