@@ -2,8 +2,7 @@
   
 use strict; 
 use warnings;    
-use diagnostics; 
-use Data::Dumper;
+use diagnostics;   
 
 =begin USAGE  
 
@@ -79,9 +78,12 @@ my $read4 = 'illumina_reads_100.fasta.gz';
 my $result = 'MatchedMarkers.txt'; 
 
 my $id = '';  
-my $i = '';  
-my %id2seq = ();   
-my @seq = ();   
+my $i = '';   
+my $sequence = '';   
+my $line = '';
+my @seq = (); 
+my %id2seq = ();  
+   
  
 #################################################################
 ##                    Reference genome hg38                    ##
@@ -240,11 +242,11 @@ used to search, and display number of occurences for each sequence
 =end STRING MATCHING 
 =cut 
  
-print "\n\nWhich search you want to perform ?\n\n1. Naive (displaying total positive occurence count only)\ni.e. how many of the markers in the read file appear in the reference\n\n2. Suffix-array based (displaying positive matches with substrings)\n\nPlease enter the option number: "; 
+print "\n\nNaive (displaying total positive occurence count only) i.e. how many of the markers in the read file appear in the reference\n\nPress one: "; 
 my $search = <STDIN>; 
 chomp $search;
 
-print "\n\nThis will take some time. Please be patient........\n\n"; 
+print "\n\nThis will take some time. Please be patient........\n\n";  
  
 ## @@@ Naive search @@@    
 
@@ -277,29 +279,38 @@ if ($search eq '1')
                     $i++;
                 }   
                  
-            }  
-            print "\n\nBased on the selection of read length, and query length, $i biomarkers appeared in the hg38 sequence.\n\n"; 
-            print "These $i occurences are the important sequences that can be processed for further analysis."; 
+            }    
+            print "\n\nFor the selection of read length, and query length, $i biomarkers appeared in the hg38 sequence based on a 'naive search' algorithm.\n\n"; 
+            print "These $i occurences are the important sequences that can be processed for further analysis.";  
+            close(R) || die "Unable to close $result\n";
     }   
 
  
-## @@@ Suffix-based array @@@ 
+## @@@ Suffix-based array @@@  === started uusing a module but Couldn't finish due to time and exhaustion :( 
+     
+## Auto-flush special variable: 
+## It forces a flush after every write or print, so the output  
+## appears as soon as it's generated rather than being buffered.    
 
 # elsif ($search eq '2') 
 #     {  
-#         suffarr();
+#       $|=1; 
+#       my $tree = SuffixTree->new($DNA);
+#       $tree->dump();  
 #     }   
+ 
+#################################################################
+##                          Subroutines                        ##
+#################################################################  
 
 ## Subroutine (function) for reading, and parsing FASTA files
 sub read_fasta
     {   
-        # blank variable 
-        my $sequence = ""; 
         # looping over the open file handle  
         while(<REF>)
             { 
                 # using default global variable $_ 
-                my  $line = $_; 
+                $line = $_; 
 
                 # removing any newline characters 
                 chomp($line); 
@@ -317,68 +328,14 @@ sub read_fasta
         # only the parsed DNA sequence remains 
         return($sequence);
     }   
- 
-# sub suffarr 
-#     { 
-#         # input string
-#         my @string = @seq;       
-#         # hash ref                   
-#         my $parts;          
-#         # break input into tokens  
-#         foreach my $string (@string) 
-#             {                           
-#                 my @$suffixes = split '',$string;               
-#                 my $running_sum   = 0;
-#                 $"=''; 
-#             }
-
-#         # Build suffix tree
-#         for (0..$#suffixes) 
-#             {
-#                 $parts->{"@suffixes"}=0;
-#                 shift @suffixes;
-#             }
-
-#         # Compare suffixes to initial string
-#         for my $suffix (sort keys %$parts) 
-#             {
-#                 $parts->{$suffix}  =  getMatch($suffix,$string);
-#                 $running_sum      +=  $parts->{$suffix};
-#             }
-
-#         # Output
-#         $Data::Dumper::Sortkeys++;
-#         print Dumper($parts), "\nTotal Matches: $running_sum";
-#     }
-  
-# sub getMatch 
-#     {
-#         my ($word,$string) = @_; 
-#         my $part    = '';
-#         my $offset  = 0;
-#         my $matches = 0;
-
-#         for (0..(length($word) - 1)) 
-#             {
-#                     $offset++;
-#                     $part = substr($word,0,$offset); 
-
-#                     if ($string =~ /^$part/) 
-#                         {  
-#                             $matches++;  
-#                         }
-#             }
-#         return $matches;
-#     }
-
-## close the file handlers 
+   
+## close the original file handlers   
 
 close(RD) || die "Unable to close the read file\n";  
-close(REF) || die "Unable to close the reference file\n"; 
-close(R) || die "Unable to close $result\n";    
+close(REF) || die "Unable to close the reference file\n";     
 
 ## raincheck: this line will only print if everything went fine ;)
 print "\n\nPlease check YOUR DIRECTORY for 'MatchedMarkers.txt'.\n\n";  
  
-# exit code
+## exit code
 exit();
