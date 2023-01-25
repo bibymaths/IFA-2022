@@ -75,7 +75,7 @@ my $read1 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads
 my $read2 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_60.fasta.gz';  
 my $read3 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_80.fasta.gz';  
 my $read4 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_100.fasta.gz';    
-my $result = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/MatchedMarkers.txt'; 
+my $result = 'ifa-2022/Advanced Algorithms/ImplementingSearch/results/MatchedMarkers.txt'; 
 
 my $id = '';  
 my $i = '';   
