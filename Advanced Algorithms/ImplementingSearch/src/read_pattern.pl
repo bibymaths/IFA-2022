@@ -70,12 +70,12 @@ in the zsh terminal (MacOS).
 ##                     Declaring Variables                     ##
 ################################################################# 
 
-my $ref = 'hg38_partial.fasta.gz';  
-my $read1 = 'illumina_reads_40.fasta.gz';  
-my $read2 = 'illumina_reads_60.fasta.gz';  
-my $read3 = 'illumina_reads_80.fasta.gz';  
-my $read4 = 'illumina_reads_100.fasta.gz';    
-my $result = 'MatchedMarkers.txt'; 
+my $ref = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/hg38_partial.fasta.gz';  
+my $read1 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_40.fasta.gz';  
+my $read2 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_60.fasta.gz';  
+my $read3 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_80.fasta.gz';  
+my $read4 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_100.fasta.gz';    
+my $result = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/MatchedMarkers.txt'; 
 
 my $id = '';  
 my $i = '';   
