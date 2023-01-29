@@ -1,21 +1,36 @@
-require(seqinr) 
-require(fm.index) 
-  
+#!/usr/bin/env Rscript
 
-ref <- read.fasta(file = "hg38_partial.fasta.gz", as.string = TRUE)
-read40 <- read.fasta(file = "illumina_reads_40.fasta.gz", as.string = TRUE)
  
-refseq <- getSequence(ref, as.string = TRUE)  
-read40seqs <- getSequence(read40, as.string = TRUE) 
-read40seqsv <- do.call(c, unlist(read40seqs, recursive=FALSE))
-refseqv <- unlist(refseq, use.names = FALSE) 
-index <- fm_index_create(refseqv, case_sensitive = FALSE) 
- 
-for (i in 1:length(read40seqsv)) {
-search <-fm_index_locate(read40seqsv[i], index) 
-if (is.null(nrow(search)) != NULL) { 
-  cat ("Match:", read40seqsv[i]) 
-  cat ("Position", search$corpus_index)
-  count = count + 1} 
-print(paste0("Total matches:", count))
-}
+require(seqinr) 
+require(fm.index)  
+require(optparse) 
+options(max.print=1000000)
+
+option_list = list( 
+  make_option(c("-r", "--ref"), type="character", default=NULL, 
+              help="reference file name", metavar="character"),
+  make_option(c("-m", "--read"), type="character", default=NULL, 
+              help="read file name", metavar="character"), 
+  make_option(c("-c", "--count"), type = "integer", default = 1000,
+              help = "number of queries",
+              metavar = "number")
+);   
+
+opt_parser = OptionParser(option_list=option_list);
+opt = parse_args(opt_parser);
+
+
+ref <- read.fasta(file = opt$ref, as.string = TRUE, seqonly = TRUE);
+read <- read.fasta(file = opt$read, as.string = TRUE, seqonly = TRUE); 
+
+refseqv <- unlist(ref, use.names = FALSE); 
+index <- fm_index_create(refseqv, case_sensitive = TRUE); 
+#cat("FMIndex done. All Indices are 1-based", "\n");
+
+readseq <- getSequence(read, as.string = TRUE); 
+readseqsv <- do.call(c, unlist(readseq, recursive=FALSE));
+reads <- readseqsv[seq.int(to = length(readseqsv), length.out = opt$count)]
+search <-fm_index_locate(reads, index);    
+#cat("Matches found:")
+search; 
+#cat("Done!", "\n");
