@@ -70,12 +70,12 @@ in the zsh terminal (MacOS).
 ##                     Declaring Variables                     ##
 ################################################################# 
 
-my $ref = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/hg38_partial.fasta.gz';  
-my $read1 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_40.fasta.gz';  
-my $read2 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_60.fasta.gz';  
-my $read3 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_80.fasta.gz';  
-my $read4 = 'ifa-2022/Advanced Algorithms/ImplementingSearch/data/illumina_reads_100.fasta.gz';    
-my $result = 'ifa-2022/Advanced Algorithms/ImplementingSearch/results/MatchedMarkers.txt'; 
+my $ref = 'hg38_partial.fasta.gz';  
+my $read1 = 'illumina_reads_40.fasta.gz';  
+my $read2 = 'illumina_reads_60.fasta.gz';  
+my $read3 = 'illumina_reads_80.fasta.gz';  
+my $read4 = 'illumina_reads_100.fasta.gz';    
+my $result = 'MatchedMarkers.txt'; 
 
 my $id = '';  
 my $i = '';   
@@ -184,8 +184,8 @@ print "PLEASE READ: For memory, and time consuming problems, this script has bee
 ##                      Number of Queries                      ##
 ################################################################# 
 
-## Reading the multi FASTA file and saving the ID's and sequence in the hash table 
-## as key:value pair  
+## Reading the multi FASTA file and saving the ID's and sequence  
+## in the hash table as key:value pair  
 
 while(<RD>) 
     {
@@ -200,7 +200,9 @@ while(<RD>)
             }
     }  
  
-
+##--------------------------------------
+##  Only storing the specified queries  
+##--------------------------------------
 ## Storing the sequences in an array  
 ## for different queries  
 
@@ -248,13 +250,15 @@ chomp $search;
 
 print "\n\nThis will take some time. Please be patient........\n\n";  
  
-## @@@ Naive search @@@    
+##---------------------------------------------------------------
+##                            Naive                             -
+##---------------------------------------------------------------   
 
 if ($search eq '1') 
     {    
         # opening an output .txt file for storing results 
         open(R, '>', $result) or die "Could not create the output file";  
-
+        # $|=1;
         foreach my $el (@seq)  
             { 
                 # Storing the binary count of every sequence  
@@ -286,9 +290,12 @@ if ($search eq '1')
     }   
 
  
-## @@@ Suffix-based array @@@  === started uusing a module but Couldn't finish due to time and exhaustion :( 
+##----------------------------------------------------------------
+##                          suffix-array                         -
+##----------------------------------------------------------------
      
-## Auto-flush special variable: 
+## Auto-flush special variable:  
+## -- "$|" --
 ## It forces a flush after every write or print, so the output  
 ## appears as soon as it's generated rather than being buffered.    
 
@@ -298,7 +305,12 @@ if ($search eq '1')
 #       my $tree = SuffixTree->new($DNA);
 #       $tree->dump();  
 #     }   
+  
+##---------------------------------------------------------------
+##                            fmindex                           -
+##---------------------------------------------------------------
  
+
 #################################################################
 ##                          Subroutines                        ##
 #################################################################  
@@ -338,4 +350,23 @@ close(REF) || die "Unable to close the reference file\n";
 print "\n\nPlease check YOUR DIRECTORY for 'MatchedMarkers.txt'.\n\n";  
  
 ## exit code
-exit();
+exit(); 
+ 
+__END__  
+
+Benchmarking for read_pattern.pl 
+   
+439 markers found | read length = 100 | query = 1000   
+Time  3.23 minutes| Memory   341 MB
+
+4280 markers found | read length = 100 | query = 10000    
+Time   33 minutes  | Memory  341 MB
+  
+511 markers found | read length = 40 | query = 1000 
+Time   2.94 minutes| Memory  334 MB  
+ 
+446 markers found | read length = 60 | query = 1000 
+Time   3.27 minutes| Memory  336 MB  
+ 
+415 markers found | read length = 80 | query = 1000 
+Time   3.83 minutes| Memory  337.5 MB 
