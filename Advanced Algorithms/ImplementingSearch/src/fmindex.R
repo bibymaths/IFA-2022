@@ -105,15 +105,13 @@ opt = parse_args(opt_parser)
 #################################################################
 
 # reading reference gzipped .fasta file for sequence retrieval
-ref <-
-  read.fasta(file = opt$ref,
+ref <- read.fasta(file = opt$ref,
              as.string = TRUE,
              seqonly = TRUE)
 
 
 # reading reads gzipped .fasta file for a list of list of sequences
-read <-
-  read.fasta(file = opt$read,
+read <- read.fasta(file = opt$read,
              as.string = TRUE,
              seqonly = TRUE)
 
@@ -131,8 +129,7 @@ readseqsv <- do.call(c, unlist(readseq, recursive = FALSE))
 
 
 # reading as per number of queries
-reads <-
-  readseqsv[seq.int(to = length(readseqsv), length.out = opt$count)]
+reads <- readseqsv[seq.int(to = length(readseqsv), length.out = opt$count)]
 
 
 ##################################################################
