@@ -1,10 +1,10 @@
 #!/usr/bin/env Rscript
 
- 
-require(seqinr) 
-require(fm.index)  
-require(optparse) 
-options(max.print=1000000)
+packages <- c("seqinr", "fm.index", "optparse");
+
+install.packages(setdiff(packages, rownames(installed.packages()))); 
+
+options(max.print=1000000);
 
 option_list = list( 
   make_option(c("-r", "--ref"), type="character", default=NULL, 
@@ -25,12 +25,12 @@ read <- read.fasta(file = opt$read, as.string = TRUE, seqonly = TRUE);
 
 refseqv <- unlist(ref, use.names = FALSE); 
 index <- fm_index_create(refseqv, case_sensitive = TRUE); 
-#cat("FMIndex done. All Indices are 1-based", "\n");
+cat("FMIndex done. All Indices are 1-based", "\n");
 
 readseq <- getSequence(read, as.string = TRUE); 
 readseqsv <- do.call(c, unlist(readseq, recursive=FALSE));
 reads <- readseqsv[seq.int(to = length(readseqsv), length.out = opt$count)]
 search <-fm_index_locate(reads, index);    
-#cat("Matches found:")
+cat("Matches found:")
 search; 
-#cat("Done!", "\n");
+cat("Done!", "\n");
