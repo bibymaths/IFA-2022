@@ -7,7 +7,8 @@ use diagnostics;
 =begin USAGE  
 
 Only core modules of perl were used. Most perl versions have  
-standard modules already installed.  
+standard modules already installed, making it executable on 
+servers, and local systems. 
  
 STEP 1. 
 
@@ -74,9 +75,12 @@ my $ref = 'hg38_partial.fasta.gz';
 my $read1 = 'illumina_reads_40.fasta.gz';  
 my $read2 = 'illumina_reads_60.fasta.gz';  
 my $read3 = 'illumina_reads_80.fasta.gz';  
-my $read4 = 'illumina_reads_100.fasta.gz';    
-my $result = 'MatchedMarkers.txt'; 
+my $read4 = 'illumina_reads_100.fasta.gz'; 
 
+## If you would like an output file, uncomment the next line 
+## and line 258, 274, 301, 313, 370 as well    
+# my $result = 'MatchedMarkers.txt';   
+ 
 my $id = '';  
 my $i = '';   
 my $sequence = '';   
@@ -112,7 +116,10 @@ else
 ## Calling the function to store reference  
 ## sequence from hg38 FASTA file
 
-my $DNA = &read_fasta(); 
+my $DNA = &read_fasta();   
+ 
+## for checking in the reverse complementary sequence 
+## my $DNAc = reverse $DNA;
  
 
 #################################################################
@@ -204,7 +211,7 @@ while(<RD>)
 ## Storing the sequences in an array  
 ## for different queries  
 
-print "Select the number of queries for read length of 100 (illumina_reads_100.fasta.gz):\n\n1.1000\n\n2.10,000\n\n3.100,000\n\n4.1,000,000\n\nPlease enter the option number:"; 
+print "Select the number of queries for the selected read length:\n\n1.1000\n\n2.10,000\n\n3.100,000\n\n4.1,000,000\n\nPlease enter the option number:"; 
 my $query = <STDIN>; 
 chomp $query; 
 
@@ -244,49 +251,75 @@ used to search, and display number of occurences for each sequence
  
 print "\n\nNaive (displaying total positive occurence count only) i.e. how many of the markers in the read file appear in the reference\n\nPress one: "; 
 my $search = <STDIN>; 
-chomp $search;
-
-print "\n\nThis will take some time. Please be patient........\n\n";  
- 
-## @@@ Naive search @@@    
-
+chomp $search;   
+  
 if ($search eq '1') 
     {    
         # opening an output .txt file for storing results 
-        open(R, '>', $result) or die "Could not create the output file";  
-
-        foreach my $el (@seq)  
-            { 
-                # Storing the binary count of every sequence  
-                # using regex operators =~, and m//gi used for  
-                # matching at least once. Adding /g will provide  
-                # the exact number of matches globally 
-                my $count = () = $DNA =~ m/$el/;    
-
-                # condition for the counts     
-                if ($count ne 0)
-                {    
-                    # Displaying the sequences which have  
-                    # non-zero counts of matching (occurs at least once) 
-                    print "Sequence: $el | Match\n";   
-         
-                    ## Output file only with matched  
-                    ## sequences seperated by newline char \n
-                    print R "$el\n";  
-                     
-                    # a counter to count number of biomarkers that appeared  
-                    # in the genome out of selected query length  
-                    $i++;
-                }   
-                 
-            }    
+        # open(R, '>', $result) or die "Could not create the output file"; 
+        print"Do you want to use index ? 'yes' or 'no'\n(If you say yes, then index function will be used[FASTER]\nIf you say no, then regex pattern matching function will be used[SLOWER])\nPlease enter:"; 
+        my $index = <STDIN>; 
+        chomp $index;  
+        print "\n\nThis will take some time. Please be patient........\n\n"; 
+        if($index eq "yes") 
+            {
+                foreach my $el (@seq)  
+                    {    
+                    # Using index to find the first match, and skip the  
+                    # file and move on to another sequence to match
+                    if (index($DNA, $el) != -1) 
+                        { 
+                            print"Sequence: $el | Match\n"; 
+                            # Output file only with matched  
+                            # sequences seperated by newline char \n
+                            # print R "$el\n"; 
+                            $i++; 
+                        }                     
+                    }    
+                    print "\n\nFor the selection of read length, and query length, $i biomarkers appeared in the hg38 sequence based on a 'naive search' algorithm.\n\n"; 
+                    print "These $i occurences are the important sequences that can be processed for further analysis.\n\n";  
+                    # close(R) || die "Unable to close $result\n";  
+            } 
+        elsif($index eq "no") 
+            {
+                foreach my $el (@seq)  
+                { 
+                    # Storing the binary count of every sequence  
+                    # using regex operators =~, and m//gi used for  
+                    # matching at least once. Adding /g will provide  
+                    # the exact number of matches globally 
+                    my $count = () = $DNA =~ m/$el/;    
+                    
+                    # condition for the counts     
+                    unless($count eq 0)
+                    {    
+                        # Displaying the sequences which have  
+                        # non-zero counts of matching (occurs at least once) 
+                        print "Sequence: $el | Match\n";   
+            
+                        # Output file only with matched  
+                        # sequences seperated by newline char \n
+                        # print R "$el\n";   
+                        
+                        
+                        # a counter to count number of biomarkers that appeared  
+                        # in the genome out of selected query length  
+                        $i++; 
+                    } 
+                            
+                } 
+            }     
             print "\n\nFor the selection of read length, and query length, $i biomarkers appeared in the hg38 sequence based on a 'naive search' algorithm.\n\n"; 
-            print "These $i occurences are the important sequences that can be processed for further analysis.";  
-            close(R) || die "Unable to close $result\n";
+            print "These $i occurences are the important sequences that can be processed for further analysis.\n\n";  
+            # close(R) || die "Unable to close $result\n";
     }   
 
  
-## @@@ Suffix-based array @@@  === started uusing a module but Couldn't finish due to time and exhaustion :( 
+## @@@ Suffix-based array @@@   
+## === started uusing a module but Couldn't finish due to time and exhaustion === ## 
+## Later found out that the libstree library couldn't symlink to Tree::Suffix     ## 
+## Unfortunately, it had to stopped there in perl implementation                  ##   
+
      
 ## Auto-flush special variable: 
 ## It forces a flush after every write or print, so the output  
@@ -335,7 +368,20 @@ close(RD) || die "Unable to close the read file\n";
 close(REF) || die "Unable to close the reference file\n";     
 
 ## raincheck: this line will only print if everything went fine ;)
-print "\n\nPlease check YOUR DIRECTORY for 'MatchedMarkers.txt'.\n\n";  
+# print "\n\nPlease check YOUR DIRECTORY for 'MatchedMarkers.txt'.\n\n";  
  
 ## exit code
 exit();
+ 
+__END__ 
+ 
+This script can be easily modified to suit the 
+needs for short or long sequence matching according  
+to user's requirements. Calling another script 
+or passing argument variables is also manageable  
+to make it a standalone sequence matcher. 
+ 
+Some modifications might be done for contigs, motifs,  
+etc to account for biological intricacies. 
+ 
+For that scenarios, using BioPerl is recommended. 
