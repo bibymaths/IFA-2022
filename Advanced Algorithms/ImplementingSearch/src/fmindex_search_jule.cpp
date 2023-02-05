@@ -10,6 +10,11 @@
 #include <seqan3/search/search.hpp>
 
 int main(int argc, char const* const* argv) {
+    typedef std::chrono:: high_resolution_clock Time;
+    typedef std::chrono::milliseconds ms;
+    typedef std::chrono::duration<float> fsec;
+    auto t0=Time::now();
+
     seqan3::argument_parser parser{"fmindex_search", argc, argv, seqan3::update_notifications::off};
 
     parser.info.author = "SeqAn-Team";
@@ -20,6 +25,12 @@ int main(int argc, char const* const* argv) {
 
     auto query_file = std::filesystem::path{};
     parser.add_option(query_file, '\0', "query", "path to the query file");
+
+    int nrQueries = 1337;
+    parser.add_option(nrQueries, '\0', "queries", "number of queries");
+
+    int nrErrors = 0;
+    parser.add_option(nrErrors, '\0', "errors", "number of errors");
 
     try {
          parser.parse();
@@ -48,17 +59,38 @@ int main(int argc, char const* const* argv) {
         seqan3::debug_stream << "done\n";
     }
 
-    seqan3::configuration const cfg = seqan3::search_cfg::max_error_total{seqan3::search_cfg::error_count{0}};
+    seqan3::configuration const cfg = seqan3::search_cfg::max_error_total{seqan3::search_cfg::error_count{nrErrors}};
 
     //!TODO here adjust the number of searches
-    queries.resize(100); // will reduce the amount of searches
 
+    // extend number of queries to nrQueries if needed
+	auto original_query_count = queries.size();
+	while (queries.size() < nrQueries) {
+		queries.push_back(queries[original_query_count-1]);
+	}
+	// limit the amount of searches
+    queries.resize(nrQueries);
 
     //!TODO !ImplementMe use the seqan3::search function to search
     auto results = seqan3::search(queries, index, cfg);
 
-    for (auto && result : results)
-        seqan3::debug_stream << result << '\n';
+
+    //seqan3::debug_stream << "Time taken by function: " << d.count() << "ms\n";
+
+    
+    seqan3::search_result<long unsigned int, seqan3::detail::empty_type, long unsigned int, long unsigned int> last;
+    for (auto && result : results){
+        last = result;
+    }
+    seqan3::debug_stream << last << '\n';
+    //seqan3::debug_stream << result << '\n';
+
+    
+    auto t1 = Time::now();
+    fsec fs = t1 -t0;
+    ms d = std::chrono::duration_cast<ms>(fs);
+    
+    seqan3::debug_stream << "Time taken by function: " << fs.count() << "s\n";
 
     return 0;
 }
