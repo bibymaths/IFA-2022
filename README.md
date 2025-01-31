@@ -40,7 +40,7 @@ This repository contains various projects developed as part of the **Introductio
     - Shallow Neural Network (SNN)
 - **Key Findings:** CNN outperformed other models for breast cancer classification, while Boosted Logistic Regression had the best accuracy for heart disease classification.
 
-### **4. Breast Cancer Image Classification**
+#### **Breast Cancer Image Classification**
 - **Programming Language:** Python (TensorFlow, Scikit-learn)
 - **Dataset:** BreaKHis - 7909 microscopic images from breast cancer tissues
 - **Description:**
