@@ -1,38 +1,74 @@
-# IFA-2022
-## Group 7  
+# **Group 7 - Computational Algorithms & Data Science Projects**
 
-The module is divided into three blocks namely, Data Science, Complex systems, and Advanced algorithms. You can find the project reports for each block, and presentation on **Project 1** (given on 18th November 2022) in the respective folders.
+## **Overview**
+This repository contains various projects developed as part of the **Introduction to Focus Areas WS 22/23** at Freie Universität Berlin. The projects explore advanced algorithms, data science, machine learning, and computational techniques applied in real-world biological and medical datasets.
 
-## Data Science 
-Contributors: Jule Brenningmeyer, Maike Herkenrath, Abhinav Mishra, Se Yeon Kim
-### Project 1 
- 
-The data, and figures used in writing the report section for **Project 1** can be found in the respective subfolders. The scripts has ran successfully on a system, and the compiled R markdown pdf has been added for better understanding. Here's some description of the script if you'd like to read:
+## **Projects & Reports**
+### **1. Advanced Algorithms - Search Implementation**
+- **Report:** [`here`](Reports/Advanced_Algorithms.pdf)
+- **Poster:** [`here`](Poster/Poster_Advanced_Algorithms.pdf)
+- **Programming Languages:** C++, Perl, R
+- **Description:** Implemented and benchmarked various search algorithms:
+  - **Naive Search**
+  - **Suffix Array Search**
+  - **FM-Index Search**
+  - **FM-Index Search with Pigeonhole Principle**
+  - **Performance evaluation (runtime & memory usage)**
+- **Key Findings:** FM-Index search was the most efficient for large datasets, while naive search was computationally expensive.
 
-#### heart_Classfication.R 
- 
-1. Loading the processed dataset using _read_csv()_. 
-2. Removing NA values using _na.omit()_. 
-3. Passing some attributes as _factors_. 
-4. Tidying up the data: _healthy_ to 0, and _unhealthy_ to 1-4 in the column _goal_. 
-5. Getting to know the data via descriptive statistics. 
-6. Understanding, and visualization for the distribution of patients in the above category. 
-7. Scatter plots by: condition, sex, and chest pain. 
-8. Dividing the data for ML training, and test set. 
-9. Training the model with classifiers used: **logistic, random forest, boosted logistic, and kNN** using _train()_ from _caret_ package. 
-10. Performance comparison, and feature extraction from each model.  
-11. Performance plots as a measure for model evaluation with ROC, calibration, precision recall gain, and Obs vs. Pred probabilities curve.  
-  
-#### heart_Classfication_NAs.R 
+### **2. Complex Systems - Viral Infection Modeling**
+- **Report:** [`here`](Reports/Complex_Systems.pdf)
+- **Programming Language:** Python
+- **Description:**
+  - Developed and simulated **ordinary differential equation (ODE) models** to study viral infections.
+  - Performed **stochastic simulations** with the Stochastic Simulation Algorithm (SSA).
+  - Estimated unknown parameters using **optimization methods**.
+  - Analyzed how **infection probability changes** with viral exposure.
+- **Key Findings:** Identified key parameters affecting infection dynamics and established relationships between viral exposure and infection probability.
 
-It is a modified version of heart_Classfication.R that includes the imputation of missing values using _MICE_ package in _R_ that uses predictive matching mean as a method to fill the six NA data points (two in _ca_, and four in _thal_).   
+### **3. Data Science - Classification & Machine Learning**
+- **Report:** [`here`](Reports/Data_Science.pdf)
+- **Presentation:** [`here`](Presentation/presentation.pdf)
+- **Programming Language:** R, Python
+- **Description:**
+  - **Project 1:** Classification of heart disease using machine learning models.
+    - Logistic Regression, Random Forest, Boosted Logistic Regression, k-Nearest Neighbors
+    - Performance metrics: Accuracy, Sensitivity, Specificity, AUC-ROC
+  - **Project 2:** Breast cancer classification using deep learning models.
+    - Convolutional Neural Network (CNN)
+    - Fully Connected Neural Network
+    - Shallow Neural Network (SNN)
+- **Key Findings:** CNN outperformed other models for breast cancer classification, while Boosted Logistic Regression had the best accuracy for heart disease classification.
 
-It creates some mild differences in accuracy, specificity, and sensitivity for every classifier, but only a significant difference in ROC-AUC for two of them, boosted logistic, and kNN, in particular.     
- 
-Since the classes were not that imbalanced, there was no change made in the partitioning of datset while splitting into test, and train. 
+### **4. Breast Cancer Image Classification**
+- **Programming Language:** Python (TensorFlow, Scikit-learn)
+- **Dataset:** BreaKHis - 7909 microscopic images from breast cancer tissues
+- **Description:**
+  - Implemented deep learning models to classify **benign vs. malignant** tissues.
+  - Used **CNN, Fully Connected NN, and Shallow NN** for classification.
+  - Evaluated models with **confusion matrices, accuracy plots, ROC curves**.
+- **Key Findings:** CNN performed best, while SNN and Fully Connected NN suffered from imbalanced training data.
 
-### Project 2  
- 
-## Complex Systems 
-Contributors: Jule Brenningmeyer, Maike Herkenrath, Abhinav Mishra 
-### Exercise 1
+## **Installation & Dependencies**
+To run the code from the Jupyter notebooks or scripts, ensure you have the following installed:
+
+```bash
+pip install numpy pandas matplotlib seaborn tensorflow scikit-learn
+```
+
+For R-based projects, install the necessary libraries:
+
+```r
+install.packages(c("caret", "ggplot2", "randomForest", "MLeval"))
+```
+
+## **Contributors**
+- **Abhinav Mishra** (Bioinformatics) – Algorithm development, data science, and optimization.
+- **Jule Brenningmeyer** (Bioinformatics) – Machine learning and stochastic modeling.
+- **Maike Herkenrath** (Bioinformatics) – Data preprocessing and deep learning.
+- **Se Yeon Kim** (Data Science) – Heart disease classification and neural network training.
+
+## **References**
+- Detrano et al. (1989). *International application of a new probability algorithm for coronary artery disease*.
+- Spanhol et al. (2016). *A Dataset for Breast Cancer Histopathological Image Classification*.
+- Reinert, K. *FM-Index and Suffix Array Algorithms*
